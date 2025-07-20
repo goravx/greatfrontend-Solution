@@ -1,33 +1,58 @@
-import React, { useState } from 'react';
-import useClickAway from './hooks/useClickAway';
-import { FiX } from 'react-icons/fi'; // Make sure react-icons is installed
-import './App.css'
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useClickAway(() => setIsOpen(false));
+// App.jsx
+import React from "react";
+import  useMouse  from "./hooks/useMouse";
+import "./App.css";
+
+export default function App() {
+  const [mouse, ref] = useMouse();
+
+  const xIntersecting = mouse.elementX > 0 && mouse.elementX < 300;
+  const yIntersecting = mouse.elementY > 0 && mouse.elementY < 300;
+  const isIntersecting = xIntersecting && yIntersecting;
 
   return (
-    <div className="app-container">
-      <button className="open-btn" onClick={() => setIsOpen(true)}>
-        Open Modal
-      </button>
+    <div className="app">
+      <h1>Mouse Tracker</h1>
+      <div
+        ref={ref}
+        className={`track-box ${isIntersecting ? "active" : ""}`}
+      >
+        <p>Use a ref to add coords relative to the element</p>
+      </div>
 
-      {isOpen && (
-        <div className="modal-backdrop">
-          <div ref={modalRef} className="modal">
-            <button className="close-btn" onClick={() => setIsOpen(false)}>
-              <FiX size={20} />
-            </button>
-            <h2>This is the Modal</h2>
-            <p>
-              Styled with CSS only—border, background, text color. Click outside or ✖ to
-              close.
-            </p>
-          </div>
-        </div>
-      )}
+      <div
+        className="mouse-popup"
+        style={{top:mouse.clientY+10,left:mouse.clientX+10}}
+      >
+        <table>
+          <thead>
+            <tr>
+              <th colSpan={2}>MOUSE POSITION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>x</td>
+              <td>{mouse.clientX}</td>
+            </tr>
+            <tr>
+              <td>y</td>
+              <td>{mouse.clientY}</td>
+            </tr>
+            <tr>
+              <th colSpan={2}>RELATIVE TO REF</th>
+            </tr>
+            <tr>
+              <td>elementX</td>
+              <td>{mouse.elementX.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>elementY</td>
+              <td>{mouse.elementY.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
-
-export default App;

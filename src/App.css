@@ -1,75 +1,63 @@
-/* Full-page container */
-.app-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f3f4f6;
-  font-family: Arial, sans-serif;
-}
-
-/* Open button styling */
-.open-btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  background-color: #1d4ed8;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Backdrop behind modal */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* Modal box styling */
-.modal {
-  background-color: #ffffff;
-  border: 2px solid #4b5563;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  color: #374151;
-  padding: 1.5rem;
-  width: 360px;
-  max-width: 90%;
-  position: relative;
-}
-
-/* Close button (X) inside modal */
-.close-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: transparent;
-  border: none;
-  color: #6b7280;
-  cursor: pointer;
-}
-.close-btn:hover {
-  color: #dc2626;
-}
-
-/* Modal heading and text */
-.modal h2 {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-  font-size: 1.25rem;
-  color: #111827;
-}
-
-.modal p {
+/* App.css */
+body {
   margin: 0;
-  color: #4b5563;
-  line-height: 1.5;
+  padding: 0;
+  font-family: "Courier New", monospace;
+  background-color: #1e1b1e;
+  color: #eee;
+  position:relative;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  
+}
+
+.track-box {
+  width: 300px;
+  height: 300px;
+  border: 2px dashed #aaa;
+  border-radius: 12px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2d2d2d;
+  color: #ddd;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.track-box.active {
+  background-color: #3b3b3b;
+  border-color: lime;
+}
+
+.mouse-popup{
+  position:absolute;
+  z-index:9999;
+  background-color:#dee4b0;
+  color:black;
+  padding:12px;
+  font-size:14px;
+  min-width:200px;
+}
+
+.mouse-popup table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+.mouse-popup th {
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+
+.mouse-popup td {
+  padding: 2px 6px;
 }
