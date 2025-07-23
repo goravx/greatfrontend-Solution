@@ -48,10 +48,8 @@ export default function App(){
               <secttion>
                 {datatoShow}
               </secttion>
-              
-         </div>
-          
-        </>
+             </div>
+     </>
     )
 
 }
