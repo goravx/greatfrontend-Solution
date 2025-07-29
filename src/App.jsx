@@ -1,55 +1,55 @@
-import React, { useEffect, useState } from "react";
-
-import debouncedata from './constants/debouncedata';
-
-
-export default function App(){
-
-    const [products,setProducts] = React.useState(debouncedata);
-    const [displayItems,setDisplayItems] = React.useState(debouncedata);
-   
-    const [value,setValue] = useState('');
-
-    const searchItemFun  = (e)=>{
-         
-         const value = e.target.value.toLowerCase();
-         const searchedProducts = products.filter((item)=>{
-             if(item.toLowerCase().startsWith(value)){
-                 return true;
-             }else{
-                 return false;
-             }
-         })
-         setDisplayItems(searchedProducts);
-    }
-
-
-    useEffect(()=>{
-             let timerId;
-             if(timerId) clearTimeout(timerId);
-             timerId = setTimeout(()=>searchItemFun({target:{value}}),500);
-
-
-             return ()=>{
-                   clearTimeout(timerId);
-             }
-         
-    },[value])
-    
-    const datatoShow = displayItems.map((item,index)=>{
-          return <h1 key={index}>{item}</h1>
-    })
-    const searchItem = <input  onChange={(e)=>setValue(e.target.value)} type="text" placeholder="Search the product"/>
-
-    return (
-        <>  
-         <div className="App">
-            {searchItem}
-              <secttion>
-                {datatoShow}
-              </secttion>
-             </div>
-     </>
-    )
-
+import React ,{useState} from "react";
+import usePrevious from "./hooks/usePrevious";
+function genetateRandomColor(){
+      const colors = ["Pink","blue","Green","Red","Orange"];
+     return colors[Math.floor(Math.random()*colors.length)];
 }
+
+
+export default function App() {
+ const [color,setNewColor] = useState(genetateRandomColor());
+ const previousColor = usePrevious(color);
+
+  const handleClick = ()=>{
+        function getNewColor(){
+             const newColor = genetateRandomColor();
+              if(color ==newColor){
+                   getNewColor();
+              }else{
+                 setNewColor(newColor);
+              }
+        }
+        getNewColor();
+  }
+
+   
+   const boxStyle = (bgColor) => ({
+    backgroundColor: bgColor,
+    height: "250px",
+    width: "250px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#fff",
+    fontWeight: "bold",
+    margin: "10px"
+  });
+
+
+
+return (
+    <div>
+      <div style={{ display: "flex", gap: "20px" }}>
+        <div style={boxStyle(previousColor)}>Previous</div>
+        <div style={boxStyle(color)}>Current</div>
+      </div>
+      <div>
+        <button onClick={handleClick} style={{ marginTop: "20px", padding: "10px 20px", fontSize: "16px" }}>
+        Change Color
+       </button>
+       </div>
+    </div>
+  );
+}
+
+
