@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
-import useClickAway from './hooks/useClickAway';
-import { FiX } from 'react-icons/fi'; // Make sure react-icons is installed
-import './App.css'
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useClickAway(() => setIsOpen(false));
+import useLocalStoarge from "./hooks/useLocalStorage";
+import createDrawing from "./common/createDrawing";
 
-  return (
-    <div className="app-container">
-      <button className="open-btn" onClick={() => setIsOpen(true)}>
-        Open Modal
-      </button>
+import { useRef ,useEffect} from "react";
+export default function App(){
+      const [drawing, saveDrawing] = useLocalStoarge('drawing',null);
+      const ref = useRef(null);
 
-      {isOpen && (
-        <div className="modal-backdrop">
-          <div ref={modalRef} className="modal">
-            <button className="close-btn" onClick={() => setIsOpen(false)}>
-              <FiX size={20} />
-            </button>
-            <h2>This is the Modal</h2>
-            <p>
-              Styled with CSS only—border, background, text color. Click outside or ✖ to
-              close.
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+      useEffect(()=>{
+             createDrawing(ref.current,drawing,saveDrawing);
+      },[drawing,saveDrawing]);
+
+
+
+      return (
+         <section>
+            <header>
+                 <h1> use Local Storage</h1>
+                 <button className="link" onClick={()=>window.location.reload()}>
+                     Reload Window
+                 </button>
+
+                 <button className="link" onClick={()=>{
+                      window.localStorage.clear();
+                      window.location.reload();
+                 }}> Clear Local Storage</button>
+            </header>
+
+              <figure>
+                   <canvas ref= {ref} width={800} height = {800}/>
+              </figure>
+         </section>
+      )
+     
 }
-
-export default App;
