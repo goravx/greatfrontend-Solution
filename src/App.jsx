@@ -1,33 +1,42 @@
-import React, { useState } from 'react';
-import useClickAway from './hooks/useClickAway';
-import { FiX } from 'react-icons/fi'; // Make sure react-icons is installed
-import './App.css'
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useClickAway(() => setIsOpen(false));
 
-  return (
-    <div className="app-container">
-      <button className="open-btn" onClick={() => setIsOpen(true)}>
-        Open Modal
+import {useState } from "react";
+import Bomb from "./components/Bomb";
+import useTimeout from "./hooks/useTimeout";
+export default function App(){
+
+      const [hasDefused,setHasDefused] = useState(false);
+      const [hasExploded,setHasExploded] = useState(false);
+
+      const clear = useTimeout(()=>{
+            setHasExploded(true);
+      },5000)
+
+     const handleClick = ()=>{
+          clear();
+          setHasDefused(!hasDefused);   
+     }
+
+     
+
+      return (
+            <>
+            
+            <section>
+      <h1>useTimeout</h1>
+      <p>You have 5s to defuse (click) the bomb or it will explode </p>
+      <button
+        className="link"
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        Reload
       </button>
-
-      {isOpen && (
-        <div className="modal-backdrop">
-          <div ref={modalRef} className="modal">
-            <button className="close-btn" onClick={() => setIsOpen(false)}>
-              <FiX size={20} />
-            </button>
-            <h2>This is the Modal</h2>
-            <p>
-              Styled with CSS only—border, background, text color. Click outside or ✖ to
-              close.
-            </p>
-          </div>
-        </div>
+      <Bomb
+        hasDefused={hasDefused}
+        hasExploded={hasExploded}
+        handleClick={handleClick}
+      />
+    </section>
+            </>
       )}
-    </div>
-  );
-}
-
-export default App;
