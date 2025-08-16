@@ -1,33 +1,49 @@
-import React, { useState } from 'react';
-import useClickAway from './hooks/useClickAway';
-import { FiX } from 'react-icons/fi'; // Make sure react-icons is installed
-import './App.css'
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useClickAway(() => setIsOpen(false));
+import * as React from "react";
+import useDefault from "./hooks/useDefault";
+
+export default function App() {
+  const initState = { name: "Tyler" };
+  const defaultState = { name: "Ben" };
+
+  const [user, setUser] = useDefault(initState, defaultState);
 
   return (
-    <div className="app-container">
-      <button className="open-btn" onClick={() => setIsOpen(true)}>
-        Open Modal
+    <section>
+      <h1>Use Default</h1>
+      <button
+        title="sets the value to Lynn"
+        className="link"
+        onClick={() => setUser({ name: "Lynn" })}
+      >
+        Lynn
       </button>
 
-      {isOpen && (
-        <div className="modal-backdrop">
-          <div ref={modalRef} className="modal">
-            <button className="close-btn" onClick={() => setIsOpen(false)}>
-              <FiX size={20} />
-            </button>
-            <h2>This is the Modal</h2>
-            <p>
-              Styled with CSS only—border, background, text color. Click outside or ✖ to
-              close.
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
+      <button
+        title="sets the valye to tyler"
+        className="link"
+        onClick={() => setUser({ name: "Tyler" })}
+      >
+        Tyler
+      </button>
+
+      <button
+        title="Sets the value to null causing it to use the default value"
+        className="link"
+        onClick={() => setUser(null)}
+      >
+        Null
+      </button>
+
+      <pre>
+            <code>{JSON.stringify(user,((key,value)=>{
+                    if(value.name=="Lynn") {
+                        return {name:"Gaurav"}
+
+                  }else{
+                         return value
+                  }
+            }),1)}</code>
+      </pre>
+    </section>
   );
 }
-
-export default App;
