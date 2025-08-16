@@ -1,33 +1,71 @@
-import React, { useState } from 'react';
-import useClickAway from './hooks/useClickAway';
-import { FiX } from 'react-icons/fi'; // Make sure react-icons is installed
-import './App.css'
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useClickAway(() => setIsOpen(false));
+import * as React from "react";
+import useObjectState from "./hooks/useObjectState";
+const initialState = {
+  team: "utah jazz",
+  wins: 2138,
+  losses: 1789,
+  championShips: 0,
+};
+
+export default function App() {
+  const [stats, setStats] = useObjectState(initialState);
+
+ const addWin = () => {
+    setStats((s) => ({
+      wins: s.wins + 1,
+    }));
+  };
+
+  const addLoss = () => {
+    setStats((s) => ({
+      losses: s.losses + 1,
+    }));
+  };
+
+  const addChampionship = () => {
+    setStats((s) => ({
+      championShips: s.championShips + 1,
+    }));
+  };
+
+  const reset = () => {
+    setStats(initialState);
+  };
 
   return (
-    <div className="app-container">
-      <button className="open-btn" onClick={() => setIsOpen(true)}>
-        Open Modal
+    <section>
+      <h1>useObjectState</h1>
+
+      <button className="link" onClick={addWin}>
+        Add Win
+      </button>
+      <button className="link" onClick={addLoss}>
+        Add Loss
+      </button>
+      <button className="link" onClick={addChampionship}>
+        Add Championship
+      </button>
+      <button className="link" onClick={reset}>
+        Reset
       </button>
 
-      {isOpen && (
-        <div className="modal-backdrop">
-          <div ref={modalRef} className="modal">
-            <button className="close-btn" onClick={() => setIsOpen(false)}>
-              <FiX size={20} />
-            </button>
-            <h2>This is the Modal</h2>
-            <p>
-              Styled with CSS only—border, background, text color. Click outside or ✖ to
-              close.
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
+
+      <table>
+            <thead>
+                  <tr>
+                        {Object.keys(stats).map((key)=>(
+                              <th key={key}>{key}</th>
+                        ))}
+                  </tr>
+            </thead>
+            <tbody>
+                  <tr>
+                        {Object.keys(stats).map((key)=>{
+                                return <td key={key}>{stats[key]}</td>
+                        })}
+                  </tr>
+            </tbody>
+      </table>
+    </section>
   );
 }
-
-export default App;
